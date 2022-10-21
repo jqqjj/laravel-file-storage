@@ -14,7 +14,7 @@ class FileStorage
      */
     public function upload(UploadedFile $file)
     {
-        $path = $file->getPath();
+        $path = $file->getPathname();
         $md5Hash = md5_file($path);
         $sha1Hash = sha1_file($path);
         $model = FileStorageModel::where([
