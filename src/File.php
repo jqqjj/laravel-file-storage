@@ -60,7 +60,7 @@ class File
         $cachePath = $this->getCachePath($signature);
         if (!Storage::disk('public')->exists($cachePath)) {
             $dir = storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.$cachePath);
-            if (!FileFacade::isDirectory(dirname($dir)) && !FileFacade::makeDirectory(dirname($dir), 0640, true, true)) {
+            if (!FileFacade::isDirectory(dirname($dir)) && !FileFacade::makeDirectory(dirname($dir), 0755, true, true)) {
                 throw new StorageException();
             }
             $image = Image::make(storage_path('app'. DIRECTORY_SEPARATOR . $this->model->path));
