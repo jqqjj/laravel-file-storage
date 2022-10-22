@@ -23,7 +23,11 @@ class FileStorage
         ])->first();
 
         if (!empty($model)) {
-            return new File($model);
+            if (!Storage::exists($model->path)) {
+                $model->delete();
+            } else {
+                return new File($model);
+            }
         }
 
         //move file to private directory
