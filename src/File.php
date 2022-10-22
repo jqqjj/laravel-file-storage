@@ -49,7 +49,7 @@ class File
             FileFacade::link($sourceFullPath, $target);
         }
 
-        return url('storage/' . str_replace('\\', '/', $relativeDirectory . DIRECTORY_SEPARATOR . basename($this->model->path)));
+        return '/storage/' . str_replace('\\', '/', $relativeDirectory . DIRECTORY_SEPARATOR . basename($this->model->path));
     }
 
     public function thumbUrl($options)
@@ -75,7 +75,7 @@ class File
             $image->save($dir);
         }
 
-        return url('storage/' . str_replace('\\', '/', $cachePath));
+        return '/storage/' . str_replace('\\', '/', $cachePath);
     }
 
     private function optionsSafe($options)
