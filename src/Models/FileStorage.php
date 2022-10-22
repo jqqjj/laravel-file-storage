@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $size
  * @property string $mime
  * @property string $md5
- * @property string $sha1
+ * @property string $crc32
  * @property string $created_at
  * @property string $updated_at
  *
@@ -24,6 +24,6 @@ class FileStorage extends Model
         'size',
         'mime',
         'md5',
-        'sha1',
+        'crc32',
     ];
 }

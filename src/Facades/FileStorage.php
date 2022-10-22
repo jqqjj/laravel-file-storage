@@ -9,7 +9,7 @@ use Jqqjj\LaravelFileStorage\File;
 /**
  * @method static File upload(UploadedFile $file)
  * @method static File|null path($path)
- * @method static File|null hash($md5Hash, $sha1Hash)
+ * @method static File|null hash($md5Hash, $crc32Hash)
  *
  * @see \Jqqjj\LaravelFileStorage\FileStorage
  */

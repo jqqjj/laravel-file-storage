@@ -19,9 +19,9 @@ return new class extends Migration
             $table->integer('size')->unsigned()->index();
             $table->string('mime')->index();
             $table->string('md5')->index();
-            $table->string('sha1')->index();
+            $table->string('crc32')->index();
             $table->timestamps();
-            $table->unique(['md5','sha1']);
+            $table->unique(['md5','crc32']);
         });
     }
 

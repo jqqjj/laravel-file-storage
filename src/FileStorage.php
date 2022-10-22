@@ -16,10 +16,10 @@ class FileStorage
     {
         $path = $file->getPathname();
         $md5Hash = md5_file($path);
-        $sha1Hash = sha1_file($path);
+        $crc32Hash = hash_file('crc32b', $path);
         $model = FileStorageModel::where([
             'md5' => $md5Hash,
-            'sha1' => $sha1Hash,
+            'crc32' => $crc32Hash,
         ])->first();
 
         if (!empty($model)) {
@@ -28,22 +28,22 @@ class FileStorage
 
         //move file to private directory
         $sourceRelativeDirectory = implode(DIRECTORY_SEPARATOR, [
-            'laravel_file_storage', substr($md5Hash,0,2), substr($md5Hash, 2,2),
+            'laravel_file_storage', 'files', substr($md5Hash,0,2), substr($md5Hash, 2,2),
         ]);
-        $sourceFullName = $sha1Hash . '_' . $file->getSize() . '.' . $file->clientExtension();
+        $sourceFullName = $crc32Hash . '.' . $file->clientExtension();
         if (Storage::exists($sourceRelativeDirectory . DIRECTORY_SEPARATOR . $sourceFullName)) {
-            unlink($sourceRelativeDirectory . DIRECTORY_SEPARATOR . $sourceFullName);
+            Storage::delete($sourceRelativeDirectory . DIRECTORY_SEPARATOR . $sourceFullName);
         }
         if (!$file->storeAs($sourceRelativeDirectory, $sourceFullName)) {
             throw new StorageException();
         }
 
         $model = FileStorageModel::create([
-            'path' => $sourceRelativeDirectory . DIRECTORY_SEPARATOR . $sourceFullName,
+            'path' => str_replace(DIRECTORY_SEPARATOR, '/', $sourceRelativeDirectory . DIRECTORY_SEPARATOR . $sourceFullName),
             'size' => $file->getSize(),
             'mime' => $file->getMimeType(),
             'md5' => $md5Hash,
-            'sha1' => $sha1Hash,
+            'crc32' => $crc32Hash,
         ]);
         return new File($model);
     }
@@ -53,11 +53,11 @@ class FileStorage
         return FileStorageModel::where(['path'=>$path])->first();
     }
 
-    public function hash($md5Hash, $sha1Hash)
+    public function hash($md5Hash, $crc32Hash)
     {
         return FileStorageModel::where([
             'md5' => $md5Hash,
-            'sha1' => $sha1Hash
+            'crc32' => $crc32Hash
         ])->first();
     }
 }
