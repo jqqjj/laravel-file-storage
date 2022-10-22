@@ -69,6 +69,9 @@ class File
                     $constraint->upsize();
                 });
             }
+            if (!empty($options['blur']) && $options['blur'] > 0) {
+                $image->blur($options['blur']);
+            }
             $image->save($dir);
         }
 
@@ -78,7 +81,7 @@ class File
     private function optionsSafe($options)
     {
         return array_intersect_key($options, array_flip([
-            'width', 'height',
+            'width', 'height', 'blur',
         ]));
     }
 
