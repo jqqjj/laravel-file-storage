@@ -55,7 +55,7 @@ class File
     public function thumbUrl($options)
     {
         $options = $this->optionsSafe($options);
-        $signature = $this->calcSignature($options);
+        $signature = $this->calcSignature(array_merge($options, ['url'=>$this->model->path]));
 
         $cachePath = $this->getCachePath($signature);
         if (!Storage::disk('public')->exists($cachePath)) {
@@ -100,8 +100,8 @@ class File
         $name = substr(basename($this->model->path), 0, strrpos(basename($this->model->path), "."));
         $ext = substr(basename($this->model->path), strrpos(basename($this->model->path), "."));
         $relativeDirectory = implode(DIRECTORY_SEPARATOR, [
-            'cache', substr($this->model->md5,0,2), substr($this->model->md5, 2,2), $name,
+            'cache', substr($this->model->md5,0,2), substr($this->model->md5, 2,2),
         ]);
-        return $relativeDirectory . DIRECTORY_SEPARATOR . $signature . $ext;
+        return $relativeDirectory . DIRECTORY_SEPARATOR . substr($signature,0,-4).substr($name, 0,4) . $ext;
     }
 }

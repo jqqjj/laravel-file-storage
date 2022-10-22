@@ -39,7 +39,7 @@ class FileStorage
         }
 
         $model = FileStorageModel::create([
-            'path' => str_replace(DIRECTORY_SEPARATOR, '/', $sourceRelativeDirectory . DIRECTORY_SEPARATOR . $sourceFullName),
+            'path' => '/' . str_replace(DIRECTORY_SEPARATOR, '/', $sourceRelativeDirectory . DIRECTORY_SEPARATOR . $sourceFullName),
             'size' => $file->getSize(),
             'mime' => $file->getMimeType(),
             'md5' => $md5Hash,
