@@ -54,14 +54,24 @@ class FileStorage
 
     public function path($path)
     {
-        return FileStorageModel::where(['path'=>$path])->first();
+        $model = FileStorageModel::where(['path'=>$path])->first();
+        if (empty($model)) {
+            return null;
+        } else {
+            return new File($model);
+        }
     }
 
     public function hash($md5Hash, $crc32Hash)
     {
-        return FileStorageModel::where([
+        $model = FileStorageModel::where([
             'md5' => $md5Hash,
             'crc32' => $crc32Hash
         ])->first();
+        if (empty($model)) {
+            return null;
+        } else {
+            return new File($model);
+        }
     }
 }
