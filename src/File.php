@@ -68,6 +68,24 @@ class File
                 $image->fit($options['width'], $options['height'], function ($constraint) {//按照比例多原始图片最大修剪
                     $constraint->upsize();
                 });
+            } else if (!empty($options['max_width']) && !empty($options['max_height'])
+                && $options['max_width'] > 0 && $options['max_height'] > 0) {
+                $scaleWidth = max($image->getWidth() / $options['max_width'], 1);
+                $scaleHeight = max($image->getHeight() / $options['max_height'], 1);
+
+                if ($scaleWidth > $scaleHeight) {
+                    $image->resize($options['max_width'],null, function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    });
+                } else {
+                    $image->resize(null, $options['max_height'], function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    });
+                }
+//                $maxScale = max($scaleWidth, $scaleHeight);
+//                $image->resize(floor($image->getWidth()/$maxScale), floor($image->getHeight()/$maxScale));
             }
             if (!empty($options['blur']) && $options['blur'] > 0) {
                 $image->blur($options['blur']);
@@ -81,7 +99,7 @@ class File
     private function optionsSafe($options)
     {
         return array_intersect_key($options, array_flip([
-            'width', 'height', 'blur',
+            'width', 'height', 'blur', 'max_width', 'max_height'
         ]));
     }
 
