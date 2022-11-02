@@ -39,7 +39,7 @@ class File
             'upload', substr($this->model->md5,0,2), substr($this->model->md5, 2,2),
         ]);
         $fullDirectory = Storage::disk('public')->path($relativeDirectory);
-        if (!FileFacade::isDirectory($fullDirectory) && !FileFacade::makeDirectory($fullDirectory, 0640, true, true)) {
+        if (!FileFacade::isDirectory($fullDirectory) && !FileFacade::makeDirectory($fullDirectory, 0755, true, true)) {
             throw new StorageException();
         }
 
